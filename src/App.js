@@ -35,12 +35,12 @@ export default function Home() {
 
         <div className="mintComplationArea">
           <div className="mintAreaLEft">
-            Total Minted
+            <h2>Total Minted</h2>
           </div>
 
           <div className="mintAreaRight">
             <p>
-              <b>{Number(claimedSupply.data)}/{Number(unclaimedSupply.data) + Number(claimedSupply.data)} </b>
+              <b>{Number(claimedSupply.data)}/{Number(unclaimedSupply.data) + Number(claimedSupply?.data)} </b>
             </p>
           </div>
 
@@ -64,15 +64,22 @@ export default function Home() {
 
 
         <div className="mintContainer">
-          {Number(unclaimedSupply?.data) + Number(claimedSupply?.data) == Number(claimedSupply.data) ?
+          {Number(unclaimedSupply?.data) + Number(claimedSupply?.data)
+            === Number(claimedSupply.data) ?
             <div>
               <h2>SOLD OUT </h2>
             </div> :
             <Web3Button
               contractAddress={nftDropContractAddress}
               action={(contract) => contract.erc721.claim(quantity)}
+              onError={(err) => {
+                alert("Error minting NFTs", err.message);
+              }}
+              onSuccess={() => {
+                alert("Succesfully minted NFT");
+              }}
             >
-              Mint NFT ({Number(activeClaimCondition.data?.currencyMetadata.displayValue) * quantity} {activeClaimCondition.data.currencyMetadata.symbol} )
+              Mint NFT ({Number(activeClaimCondition?.data?.currencyMetadata.displayValue) * quantity} {" "} {activeClaimCondition?.data?.currencyMetadata.symbol} )
             </Web3Button>
           }
 
